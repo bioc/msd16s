@@ -1,0 +1,73 @@
+%\VignetteIndexEntry{msd16s}
+%\VignetteKeywords{ExperimentData, 16SExpressionData,metagenomeSeq}
+%\VignetteDepends{metagenomeSeq,msd16s}
+%\VignettePackage{msd16s}
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\begin{document}
+\title{Moderate-to-Severe diarrhea 16S dataset}
+
+\maketitle
+This data package contains the information used to run the analyses found in "Diarrhea in young children from low-income countries leads to large-scale alterations in intestinal microbiota composition". 
+Measurements are the number of reads annotated for a particular cluster within a given sample followed by filtering. 
+Sequencing was performed on the 454 Flex platform.
+Data is stored as an \Robject{MRexperiment}-class object. The count matrix was generated using DNAclust (http://dnaclust.sourceforge.net/). For more details please refer to the paper.
+
+The help file \verb+?msd16s+ describes the example dataset.
+
+\section{The Data}
+We start by loading the library and the data.
+
+<<>>=
+suppressMessages(library(metagenomeSeq))
+library(msd16s)
+data(msd16s)
+@
+
+This will load the \verb+msd16s+ object of class \Robject{MRexperiment}.
+As described in the \verb+metagenomeSeq+ vignette, \Rfunction{print} (or \Rfunction{show}) will display summary information. 
+
+<<>>=
+msd16s
+@
+
+The data in \verb+msd16s+ is the substrate for the analysis described in 
+"Diarrhea in young children from low-income countries leads to large-scale alterations in intestinal microbiota composition". 
+Included in the \Robject{MRexperiment} object are the counts, phenotype and feature information. 
+
+The phenotype information can be accessed with the \verb+phenoData+ and \verb+pData+ methods:
+<<>>=
+phenoData(msd16s)
+head(pData(msd16s))
+@
+
+The feature information including cluster representative sequence can be accessed with the \verb+featureData+ and \verb+fData+ methods:
+<<>>=
+featureData(msd16s)
+head(fData(msd16s))
+@
+
+The raw or normalized counts matrix can be accessed with the \verb+MRcounts+ function:
+<<>>=
+head(MRcounts(msd16s[,1:10]))
+@
+
+Using this class, the object can be easily subsetted, for example:
+<<>>=
+msd16s_bangladesh = msd16s[,pData(msd16s)$Country == "Bangladesh"]
+msd16s_bangladesh
+@
+\end{document}
